@@ -5,20 +5,21 @@ import time
 import urllib
  
 def get_signed(url_params, access_key, secret):
-    # Sort the URL parameters by key
 
+    # Add neccessary params
     url_params['AWSAccessKeyId'] = access_key
     url_params['Timestamp'] = time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())
 
+    # Sort the URL parameters by key
     keys = url_params.keys()
     keys.sort()
+
     # Get the values in the same order of the sorted keys
     values = map(url_params.get, keys)
      
     # Reconstruct the URL paramters and encode them
     url_string = urllib.urlencode(zip(keys, values))
     url_string = url_string.replace('+', " ") 
-    url_string = url_string.replace(':', ":") 
      
     #Construct the string to sign
     string_to_sign = "GET\necs.amazonaws.com\n/onca/xml\n%s" % url_string
