@@ -16,9 +16,9 @@ def get_signed(url_params, access_key, secret):
     values = map(url_params.get, keys)
      
     # Reconstruct the URL paramters and encode them
-    url_string = urllib.urlencode( zip(keys,values) )
-    url_string = url_string.replace('+'," ") 
-    url_string = url_string.replace(':',":") 
+    url_string = urllib.urlencode(zip(keys, values))
+    url_string = url_string.replace('+', " ") 
+    url_string = url_string.replace(':', ":") 
      
     #Construct the string to sign
     string_to_sign = "GET\necs.amazonaws.com\n/onca/xml\n%s" % url_string
@@ -26,7 +26,7 @@ def get_signed(url_params, access_key, secret):
     h = hmac.new(secret, string_to_sign, hashlib.sha256)
     signature = base64.b64encode(h.digest())
     base_url = "http://ecs.amazonaws.com/onca/xml"
-    request = "%s?%s&Signature=%s" % (base_url,url_string,urllib.quote(signature))
+    request = "%s?%s&Signature=%s" % (base_url, url_string, urllib.quote(signature))
 
     return request
 
@@ -44,4 +44,4 @@ if __name__ == '__main__':
         'Keywords':"Monkees"
     }
  
-    print get_signed(url_params,AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+    print get_signed(url_params, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
